@@ -1,0 +1,55 @@
+version: '3'
+services:
+  user:
+    build: ./user-platfrom
+    restart: always
+    hostname: user
+    env_file:
+      - .env.e2e
+    networks:
+      - backend
+    links:
+      - db
+    ports:
+      - ${USER_SERVICE_PORT}:${USER_SERVICE_PORT}
+  notification:
+    build: ./notification-platform
+    restart: always
+    hostname: notification
+    env_file:
+      - .env.e2e
+    networks:
+      - backend
+    ports:
+      - ${MAIL_SERVICE_PORT}:${MAIL_SERVICE_PORT}
+  todo:
+    build: ./todo-platform
+    restart: always
+    hostname: todo
+    env_file:
+      - .env.e2e
+    networks:
+      - backend
+    links:
+      - notification
+      - user
+      - db
+    ports:
+      - ${TODO_SERVICE_PORT}:${TODO_SERVICE_PORT}    
+  db:
+    image: 'mongo:3.7'
+    restart: always
+    hostname: db
+    environment:
+      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
+    volumes:
+      - "./db/init/:/docker-entrypoint-initdb.d/"
+    networks:
+      - backend
+    env_file:
+      - .env.e2e
+    ports:
+      - 27020:27017
+networks:
+  backend:
+    driver: bridge
