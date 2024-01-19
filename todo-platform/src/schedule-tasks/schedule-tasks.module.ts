@@ -9,25 +9,17 @@ import {
   USER_SERVICE_KEY,
 } from 'src/common/config/constant';
 import { DiscoveryService } from 'src/common/service.discovery';
-import { Task, TaskSchema } from 'src/mongo/schemas/task.schema';
-import {
-  TaskHistory,
-  TaskHistorySchema,
-} from 'src/mongo/schemas/task_history.schema';
 import {
   TaskNotification,
   TaskNotificationSchema,
 } from 'src/mongo/schemas/task_notification.schema';
 import { TaskNotificationRepository } from 'src/repositories/task.notification.repository';
-import { TaskRepository } from 'src/repositories/task.repository';
 import { ScheduleTasksService } from './tasks/tasks.service';
 
 @Module({
   imports: [
     ScheduleModule.forRoot(),
     MongooseModule.forFeature([
-      { name: Task.name, schema: TaskSchema },
-      { name: TaskHistory.name, schema: TaskHistorySchema },
       { name: TaskNotification.name, schema: TaskNotificationSchema },
     ]),
   ],
@@ -49,7 +41,6 @@ import { ScheduleTasksService } from './tasks/tasks.service';
       },
       inject: [DiscoveryService],
     },
-    TaskRepository,
     TaskNotificationRepository,
     ScheduleTasksService,
   ],

@@ -8,7 +8,6 @@ import {
 import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
 import { IUser } from 'src/repositories/model/user';
-import { TaskDocument } from 'src/mongo/schemas/task.schema';
 import { TodoDocument } from 'src/mongo/schemas/todo.schema';
 
 @Injectable({ scope: Scope.REQUEST })
@@ -17,8 +16,7 @@ export class PermissionGuard {
 
   public hasPermission(todo: TodoDocument, loggedInUser: IUser) {
     if (
-      todo.owner == loggedInUser['_id'] ||
-      todo.coowner.find(loggedInUser['_id'])
+      todo.owner == loggedInUser['_id'] 
     ) {
       return;
     }
@@ -38,9 +36,4 @@ export class PermissionGuard {
     }
   }
 
-  public isTaskActive(dbRecord: TaskDocument) {
-    if (!dbRecord.active) {
-      throw new BadRequestException('The task is been deleted');
-    }
-  }
 }
