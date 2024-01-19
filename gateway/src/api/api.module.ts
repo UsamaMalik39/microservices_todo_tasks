@@ -9,19 +9,13 @@ import { DiscoveryService } from '../common/service.discovery';
 import { AuthGuard } from './guards/auth.guard';
 import { UserController } from './user/user.controller';
 import { UserService } from './user/user.service';
-import { TaskController } from './task/task.controller';
-import { TaskService } from './task/task.service';
 import { TodoController } from './todo/todo.controller';
 import { TodoService } from './todo/todo.service';
-import { TaskActivityService } from './task-activity/task-activity.service';
-import { TaskActivityController } from './task-activity/task-activity.controller';
 
 @Module({
   controllers: [
     UserController,
-    TaskController,
     TodoController,
-    TaskActivityController,
   ],
   providers: [
     DiscoveryService,
@@ -43,9 +37,7 @@ import { TaskActivityController } from './task-activity/task-activity.controller
     },
     AuthGuard,
     UserService,
-    TaskService,
     TodoService,
-    TaskActivityService,
   ],
 })
 export class ApiModule {}

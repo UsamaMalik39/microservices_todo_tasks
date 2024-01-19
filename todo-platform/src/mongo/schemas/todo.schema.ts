@@ -13,8 +13,8 @@ export class Todo extends Base {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
   owner: User;
 
-  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] })
-  coowner: User[];
+  @Prop()
+  status: string;
 
   @Prop()
   active: boolean;

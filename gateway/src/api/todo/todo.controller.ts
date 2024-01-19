@@ -16,7 +16,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { TodoService } from './todo.service';
-import { CoOwnersRequestDto } from '../dto/coowers.dto';
 import { AuthGuard } from '../guards/auth.guard';
 import { TodoRequestDto } from '../dto/todo.dto';
 
@@ -75,20 +74,6 @@ export class TodoController {
   @ApiResponse({ status: 404, description: 'The record was not found.' })
   async update(@Param('id') id: string, @Body() todo: TodoRequestDto) {
     return await this.service.update(id, todo);
-  }
-
-  @Put('/share/:id')
-  @ApiBody({
-    type: CoOwnersRequestDto,
-  })
-  @ApiOperation({ summary: 'share todo' })
-  @ApiResponse({
-    status: 200,
-    description: 'The record has been successfully updated.',
-  })
-  @ApiResponse({ status: 404, description: 'The record was not found.' })
-  async share(@Param('id') id: string, @Body() users: CoOwnersRequestDto) {
-    return await this.service.addCoOwners(id, users);
   }
 
   @Delete(':id')

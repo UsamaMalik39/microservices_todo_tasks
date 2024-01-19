@@ -3,7 +3,6 @@ import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
 import { ClientProxy } from '@nestjs/microservices';
 import { LOGGED_IN_USER, TODO_SERVICE } from '../../common/config/constant';
-import { CoOwnersRequestDto } from '../dto/coowers.dto';
 import { TodoDto, TodoRequestDto } from '../dto/todo.dto';
 
 @Injectable({ scope: Scope.REQUEST })
@@ -56,20 +55,7 @@ export class TodoService {
     return response;
   }
 
-  public async addCoOwners(
-    id: string,
-    users: CoOwnersRequestDto,
-  ): Promise<TodoDto> {
-    const pattern = { cmd: 'share_todo' };
-    const response: TodoDto = await this.todoServiceClient
-      .send(pattern, {
-        id,
-        users,
-        loggedInUser: this.request[LOGGED_IN_USER],
-      })
-      .toPromise();
-    return response;
-  }
+
 
   public async delete(id: string): Promise<TodoDto> {
     const pattern = { cmd: 'delete_todo' };

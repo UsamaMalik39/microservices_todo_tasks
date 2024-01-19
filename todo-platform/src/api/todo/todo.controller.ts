@@ -1,6 +1,5 @@
 import { TodoRequestDto } from 'src/api/dto/todo.dto';
 import { TodoService } from './todo.service';
-import { CoOwnersRequestDto } from 'src/api/dto/coowers.dto';
 import { UserDto } from 'src/api/dto/user.dto';
 import { MessagePattern } from '@nestjs/microservices';
 import { Controller, Logger } from '@nestjs/common';
@@ -36,18 +35,6 @@ export class TodoController {
     return await this.service.update(data.id, data.todo, data.loggedInUser);
   }
 
-  @MessagePattern({ cmd: 'share_todo' })
-  async share(data: {
-    id: string;
-    users: CoOwnersRequestDto;
-    loggedInUser: UserDto;
-  }) {
-    return await this.service.addCoOwners(
-      data.id,
-      data.users,
-      data.loggedInUser,
-    );
-  }
 
   @MessagePattern({ cmd: 'delete_todo' })
   async delete(data: { id: string; loggedInUser: UserDto }) {
