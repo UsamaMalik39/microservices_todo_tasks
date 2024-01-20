@@ -2,7 +2,7 @@ import { Injectable, Logger, Inject, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
 import { ClientProxy } from '@nestjs/microservices';
-import { LOGGED_IN_USER, TODO_SERVICE } from '../../common/config/constant';
+import { LOGGED_IN_USER, LOGGER_SERVICE, TODO_SERVICE } from '../../common/config/constant';
 import { TodoDto, TodoRequestDto } from '../dto/todo.dto';
 
 @Injectable({ scope: Scope.REQUEST })
@@ -11,6 +11,7 @@ export class TodoService {
   constructor(
     @Inject(REQUEST) private readonly request: Request,
     @Inject(TODO_SERVICE) private readonly todoServiceClient: ClientProxy,
+    @Inject(LOGGER_SERVICE) private readonly loggerServiceClient: ClientProxy,
   ) {}
 
   public async getAll(): Promise<TodoDto[]> {
@@ -40,6 +41,11 @@ export class TodoService {
         loggedInUser: this.request[LOGGED_IN_USER],
       })
       .toPromise();
+    await this.loggerServiceClient
+    .send({cmd: 'create_logs'}, {
+      log: {title: `Created a todo with title: ${todo.title}`}
+    })
+    .toPromise();
     return response;
   }
 
@@ -52,6 +58,11 @@ export class TodoService {
         loggedInUser: this.request[LOGGED_IN_USER],
       })
       .toPromise();
+    await this.loggerServiceClient
+    .send({cmd: 'create_logs'}, {
+      log: {title: `updated a todo with title: ${todo.title}`}
+    })
+    .toPromise();
     return response;
   }
 
@@ -65,6 +76,11 @@ export class TodoService {
         loggedInUser: this.request[LOGGED_IN_USER],
       })
       .toPromise();
+    await this.loggerServiceClient
+    .send({cmd: 'create_logs'}, {
+      log: {title: `updated a todo with id: ${id}`}
+    })
+    .toPromise();
     return response;
   }
 }

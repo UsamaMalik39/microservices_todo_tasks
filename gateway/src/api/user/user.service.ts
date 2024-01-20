@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { USER_SERVICE } from '../../common/config/constant';
+import { LOGGER_SERVICE, USER_SERVICE } from '../../common/config/constant';
 import { LoginRequestDto, LoginResponseDto } from '../dto/login.dto';
 import { UserDto } from '../dto/user.dto';
 
@@ -8,6 +8,7 @@ import { UserDto } from '../dto/user.dto';
 export class UserService {
   constructor(
     @Inject(USER_SERVICE) private readonly userServiceClient: ClientProxy,
+    @Inject(LOGGER_SERVICE) private readonly loggerServiceClient: ClientProxy,
   ) {}
 
   public async getAll(): Promise<UserDto[]> {
@@ -66,6 +67,11 @@ export class UserService {
         model,
       })
       .toPromise();
+    const logResponse = await this.loggerServiceClient
+    .send({cmd: 'create_logs'}, {
+      log: {title: `logged in via email: ${model.email}`}
+    })
+    .toPromise();
     return response;
   }
 }

@@ -8,6 +8,9 @@ import { Logs, LogsDocument } from 'src/mongo/schema/logs.schema';
 export class LogsRepository {
   constructor(@InjectModel(Logs.name) private logsModel: Model<LogsDocument>) {}
 
+  public async findAll(): Promise<LogsDocument[]> {
+    return this.logsModel.find().exec();
+  }
   public async findOne(loggedInUser:any): Promise<LogsDocument[]> {
     const item = await this.logsModel.find({ owner: loggedInUser }).exec();
     if (!item) {
