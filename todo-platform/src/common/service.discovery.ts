@@ -11,13 +11,6 @@ export class DiscoveryService {
       },
       transport: Transport.TCP,
     };
-    this.envConfig.mailService = {
-      options: {
-        port: process.env.MAIL_SERVICE_PORT ?? 3002,
-        host: process.env.MAIL_SERVICE_HOST ?? '0.0.0.0',
-      },
-      transport: Transport.TCP,
-    };
   }
 
   get(key: string): any {

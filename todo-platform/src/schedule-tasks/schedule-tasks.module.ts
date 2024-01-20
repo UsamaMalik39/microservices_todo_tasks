@@ -3,36 +3,23 @@ import { ClientProxyFactory } from '@nestjs/microservices';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ScheduleModule } from '@nestjs/schedule';
 import {
-  MAIL_SERVICE,
-  MAIL_SERVICE_KEY,
   USER_SERVICE,
   USER_SERVICE_KEY,
 } from 'src/common/config/constant';
 import { DiscoveryService } from 'src/common/service.discovery';
-import {
-  TaskNotification,
-  TaskNotificationSchema,
-} from 'src/mongo/schemas/task_notification.schema';
-import { TaskNotificationRepository } from 'src/repositories/task.notification.repository';
 import { ScheduleTasksService } from './tasks/tasks.service';
+import { TodoRepository } from 'src/repositories/todo.repository';
+import { Todo, TodoSchema } from 'src/mongo/schemas/todo.schema';
 
 @Module({
   imports: [
     ScheduleModule.forRoot(),
     MongooseModule.forFeature([
-      { name: TaskNotification.name, schema: TaskNotificationSchema },
+      { name: Todo.name, schema: TodoSchema },
     ]),
   ],
   providers: [
     DiscoveryService,
-    {
-      provide: MAIL_SERVICE,
-      useFactory: (discoveryService: DiscoveryService) => {
-        const mailServiceOptions = discoveryService.get(MAIL_SERVICE_KEY);
-        return ClientProxyFactory.create(mailServiceOptions);
-      },
-      inject: [DiscoveryService],
-    },
     {
       provide: USER_SERVICE,
       useFactory: (discoveryService: DiscoveryService) => {
@@ -41,8 +28,8 @@ import { ScheduleTasksService } from './tasks/tasks.service';
       },
       inject: [DiscoveryService],
     },
-    TaskNotificationRepository,
     ScheduleTasksService,
+    TodoRepository
   ],
 })
 export class ScheduleTasksModule {}

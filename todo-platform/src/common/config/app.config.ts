@@ -3,4 +3,4 @@ export const MONGO_CONNECTION =
 export const TODO_SERVICE_PORT = process.env.TODO_SERVICE_PORT ?? 3000;
 export const TODO_SERVICE_HOST = process.env.TODO_SERVICE_HOST ?? '0.0.0.0';
 export const ENABLE_CRON = process.env.ENABLE_CRON ?? true;
-export const CRON_TIME = process.env.CRON_TIME ?? '10 * * * * *';
+export const CRON_TIME = process.env.CRON_TIME ?? '0 0 1 * *';
