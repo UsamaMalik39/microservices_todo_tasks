@@ -18,6 +18,13 @@ export class DiscoveryService {
       },
       transport: Transport.TCP,
     };
+    this.envConfig.loggerService = {
+      options: {
+        port: process.env.LOGGER_SERVICE_PORT ?? 3002,
+        host: process.env.LOGGER_SERVICE_HOST ?? '0.0.0.0',
+      },
+      transport: Transport.TCP,
+    };
   }
 
   get(key: string): any {
