@@ -3,5 +3,5 @@ FROM node:latest
 RUN mkdir -p /var/www/logger
 WORKDIR /var/www/logger
 ADD . /var/www/logger
-RUN yarn install
-CMD yarn run build && yarn run start:prod
+RUN npm install
+CMD npm run build && npm run start:prod

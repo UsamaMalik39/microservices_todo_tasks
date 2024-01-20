@@ -10,9 +10,8 @@ services:
       - backend
     links:
       - todo
-      - notification
+      - logger
       - user
-      - db
     ports:
       - ${GATEWAY_SERVICE_PORT}:${GATEWAY_SERVICE_PORT}
   user:
@@ -23,12 +22,10 @@ services:
       - .env
     networks:
       - backend
-    links:
-      - db
-  notification:
-    build: ./notification-platform
+  logger:
+    build: ./logger
     restart: always
-    hostname: notification
+    hostname: logger
     env_file:
       - .env
     networks:
@@ -42,24 +39,8 @@ services:
     networks:
       - backend
     links:
-      - notification
+      - logger
       - user
-      - db
-  db:
-    image: 'mongo:3.7'
-    restart: always
-    hostname: db
-    environment:
-      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
-    volumes:
-      - "./db/data/db-files:/data/db"
-      - "./db/init/:/docker-entrypoint-initdb.d/"
-    networks:
-      - backend
-    env_file:
-      - .env
-    ports:
-      - ${MONGO_CONNECTION_PORT}:27017
 networks:
   backend:
     driver: bridge
